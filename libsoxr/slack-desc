@@ -1,0 +1,14 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler---------------------------------------------------------------------------------|
+libsoxr: libsoxr (The SoX Resampler library)
+libsoxr: The SoX Resampler library `libsoxr' performs one-dimensional sample-rate conversion
+libsoxr: it may be used,for example, to resample PCM-encoded audio. Libsoxr provides a simple
+libsoxr: API that allows interfacing using the most commonly-used sample formats and buffering schemes,
+libsoxr: for real-time resampling, libsoxr may have a higher latency than non-FFT based resamplers.
+
