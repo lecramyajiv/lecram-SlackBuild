@@ -1,0 +1,22 @@
+[Desktop Entry]
+Categories=Application;Qt;Office;
+Comment[en_US]=
+Comment=
+Encoding=UTF-8
+Exec=vym
+GenericName[en_US]=Planning and Brainstorming Tool
+GenericName=Planning and Brainstorming Tool
+Icon=vym
+MimeType=
+Name[en_US]=VYM - View Your Mind
+Name=VYM - View Your Mind
+Name[de]=VYM - View Your Mind
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
