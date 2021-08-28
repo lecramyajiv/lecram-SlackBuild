@@ -1,0 +1,11 @@
+kvazaar: Kvazaar (An open-source HEVC encoder)
+kvazaar:
+kvazaar: Kvazaar is an open-source HEVC encoder licensed under LGPLv2.1.
+kvazaar: Kvazaar is not yet finished and does not implement all the features
+kvazaar: of HEVC. Compression performance will increase as more coding tools
+kvazaar: are added.
+kvazaar:
+kvazaar:
+kvazaar:
+kvazaar:
+kvazaar: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
