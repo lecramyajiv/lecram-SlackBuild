@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+libopenmpt3: libopenmpt3
+libopenmpt3:
+libopenmpt3: libopenmpt, a library to render tracker music (MOD, XM, S3M, IT MPTM
+libopenmpt3: and dozens of other legacy formats) to a PCM audio stream. libopenmpt
+libopenmpt3: is directly based on OpenMPT, offering the same playback quality
+libopenmpt3: and format support, and development of the two happens in parallel.
+libopenmpt3:
+libopenmpt3:
+libopenmpt3:
+libopenmpt3:
+libopenmpt3: Home: https://lib.openmpt.org
