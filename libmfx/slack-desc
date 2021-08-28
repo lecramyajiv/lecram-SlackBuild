@@ -1,0 +1,13 @@
+
+     |-----handy-ruler------------------------------------------------------|
+libmfx: libmfx (libmfx)
+libmfx:
+libmfx: Autotooled version of the opensource
+libmfx: Intel media sdk dispatcher.
+libmfx: It supports the  Intel QuickSync Video (QSV)
+libmfx: for accelerated decoding and encoding
+libmfx: of multiple codecs
+libmfx:
+libmfx:
+libmfx:
+libmfx: Home: https://github.com/lu-zero/mfx_dispatch
