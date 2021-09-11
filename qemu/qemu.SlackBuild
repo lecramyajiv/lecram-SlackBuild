@@ -1,0 +1,334 @@
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+
+#!/bin/sh
+
+# Set initial variables:
+
+PRGNAM=qemu
+VERSION=${VERSION:-"6.1.0"}
+BUILD=${BUILD:-1}
+NUMJOBS=${NUMJOBS:-" -j$(nproc) "}
+TAG=${TAG:-lec}
+
+# The documentation:
+DOCS="COPYING* LICENSE MAINTAINERS README* VERSION"
+
+# Where do we look for sources?
+SRCDIR=$(cd $(dirname $0); pwd)
+
+# Place to build (TMP) package (PKG) and output (OUTPUT) the program:
+TMP=${TMP:-/tmp/build}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+SOURCE[0]="$SRCDIR/${PRGNAM}-${VERSION}.tar.xz"
+SRCURL[0]="https://download.qemu.org/${PRGNAM}-${VERSION}.tar.xz"
+
+##
+## --- with a little luck, you won't have to edit below this point --- ##
+##
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+# Set CFLAGS/CXXFLAGS and LIBDIRSUFFIX:
+case "$ARCH" in
+  i?86)      SLKCFLAGS="-O2 -march=${ARCH} -mtune=i686"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             KVMARCH="i386"
+             ;;
+  x86_64)    SLKCFLAGS="-O2 -fPIC"
+             SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+             KVMARCH="x86_64"
+             ;;
+  armv7hl)   SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             KVMARCH=""
+             ;;
+  *)         SLKCFLAGS=${SLKCFLAGS:-"O2"}
+             SLKLDFLAGS=${SLKLDFLAGS:-""}; LIBDIRSUFFIX=${LIBDIRSUFFIX:-""}
+             KVMARCH=""
+             ;;
+esac
+
+case "$ARCH" in
+    arm*)    TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)       TARGET=$ARCH-slackware-linux ;;
+esac
+
+# Exit the script on errors:
+
+set -e
+trap 'echo "$0 FAILED at line $LINENO!" | tee $OUTPUT/error-${PRGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+P1=${1:-1}
+
+# Save old umask and set to 0022:
+
+_UMASK_=$(umask)
+umask 0022
+
+# Create working directories:
+
+mkdir -p $OUTPUT          # place for the package to be saved
+mkdir -p $TMP/tmp-$PRGNAM # location to build the source
+mkdir -p $PKG             # place for the package to be built
+rm -rf $PKG/*             # always erase old package's contents
+rm -rf $TMP/tmp-$PRGNAM/* # remove the remnants of previous build
+rm -rf $OUTPUT/{configure,make,install,error,makepkg}-$PRGNAM.log
+                          # remove old log files
+
+
+# --- PACKAGE BUILDING ---
+
+echo "++"
+echo "|| $PRGNAM-$VERSION"
+echo "++"
+
+cd $TMP/tmp-$PRGNAM
+echo "Extracting the source archive(s) for $PRGNAM..."
+tar -xvf ${SOURCE[0]}
+chown -R root:root *
+chmod -R u+w,go+r-w,a+X-s *
+
+
+echo "Building QEMU..."
+cd ${PRGNAM}-${VERSION}
+
+# Care for users who used "su" instead of "su -":
+if ! which texi2html 1>/dev/null 2>/dev/null ; then
+  export PATH=$PATH:/usr/share/texmf/bin
+fi
+
+# Support PulseAudio if it is installed on the computer:
+if pkg-config --exists libpulse 2>/dev/null ; then
+  AUDIO_DRV="${AUDIO_DRV:-alsa,oss,sdl,pa}"
+else
+  AUDIO_DRV="${AUDIO_DRV:-alsa,oss,sdl}"
+fi
+
+# Support nettle if it is installed on the computer:
+if pkg-config --exists nettle 2>/dev/null ; then
+  USE_NETTLE="${USE_NETTLE:---enable-nettle}"
+else
+  USE_NETTLE="${USE_NETTLE:---disable-nettle}"
+fi
+
+# Support the SPICE protocol if it is installed on the computer:
+if pkg-config --exists spice-server 2>/dev/null ; then
+  USE_SPICE="${USE_SPICE:---enable-spice}"
+else
+  USE_SPICE="${USE_SPICE:---disable-spice}"
+fi
+
+# If you want all the exotic target platforms, then you should remove
+# the "--target-list" line from the 'configure' block below because we only
+# build a relevant subset.
+
+# these options might be useful on real hardware
+# xen             xen backend driver support install xen devel  spice-protocol(>=0.12.3) devel
+# xen-pci-passthrough    PCI passthrough support for Xen tcmalloc and jemalloc can't be used at same time
+# hvf -needs apple frameworks
+# libseccomp, virglrenderer and netmap not found don't use sanitizers --enable-tcg-interpreter \
+#  Use of the TCG interpretor is not recommended on this host architecture. There is a native TCG execution backend available
+# which provides substantially better performance and reliability.
+# NVMM not available on this platform
+# maybe seccomp needs version no?
+# virtiofsd requires libcap-ng-devel and seccomp-devel
+# Library mpathpersist found: NO
+# Run-time dependency appleframeworks found: NO (tried framework)
+# Dependency libseccomp found: NO found 0.0.0 but need: '>=2.3.0'
+# Run-time dependency libseccomp found: NO (tried pkgconfig)
+# Has header "brlapi.h" : NO
+# Library rados found: NO
+# Has header "rbd/librbd.h" : NO
+# Has header "lzfse.h" : NO  --dormant library risky
+# Run-time dependency u2f-emu found: NO (tried pkgconfig)
+# Run-time dependency libbpf found: NO (tried pkgconfig)
+# Has header "sys/disk.h" : NO
+# Has header "sys/ioccom.h" : NO
+# Has header "sys/kcov.h" : NO
+# Header <machine/bswap.h> has symbol "bswap32" : NO
+# Header <getopt.h> has symbol "optreset" : NO
+# Checking whether type "struct sigevent" has member "sigev_notify_thread_id" : NO
+# Run-time dependency capstone found: NO (tried pkgconfig)
+# Program qemu-keymap found: NO
+# ERROR: Problem encountered: Install a Python 3 version of python-sphinx and the readthedoc theme
+# WARNING: Project targeting '>=0.55.0' but tried to use feature introduced in '0.57.0': test() timeout <= 0.
+# tsan slows down
+# ERROR: SafeStack not supported by your com  --enable-sparse ---> Program cgcc found: NO
+# ERROR: Problem encountered: malloc_trim not available with non-libc memory allocator
+# ERROR: Problem encountered: WHPX not available on this platform
+
+
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --enable-profiler \
+  --enable-gprof \
+  --enable-gcov \
+  --enable-plugins \
+  --enable-system \
+  --enable-user \
+  --enable-linux-user \
+  --enable-bsd-user \
+  --disable-docs \
+  --enable-guest-agent \
+  --enable-pie \
+  --enable-auth-pam \
+  --enable-sdl \
+  --enable-sdl-image \
+  --enable-gtk \
+  --enable-vte \
+  --enable-iconv \
+  --enable-vnc  \
+  --enable-vnc-sasl \
+  --enable-vnc-jpeg \
+  --enable-vnc-png \
+  --enable-virtfs \
+  --enable-virtiofsd \
+  --enable-libudev \
+  --enable-membarrier \
+  --enable-fdt \
+  --enable-curl \
+  --enable-kvm \
+  --enable-hax \
+  --enable-vde \
+  --enable-rdma \
+  --enable-seccomp \
+  --enable-linux-aio \
+  --enable-linux-io-uring \
+  --enable-cap-ng \
+  --enable-attr \
+  --enable-vhost-net \
+  --enable-vhost-vsock \
+  --enable-vhost-scsi \
+  --enable-vhost-crypto \
+  --enable-vhost-kernel \
+  --enable-vhost-user \
+  --enable-vhost-vdpa \
+  --enable-bpf \
+  --enable-libiscsi \
+  --enable-libnfs \
+  --enable-smartcard \
+  --enable-libusb \
+  --enable-spice-protocol \
+  --enable-usb-redir \
+  --enable-lzo \
+  --enable-snappy \
+  --enable-bzip2 \
+  --enable-zstd \
+  --enable-libssh \
+  --enable-numa \
+  --enable-libxml2 \
+  --enable-jemalloc \
+  --enable-opengl \
+  --enable-virglrenderer \
+  --enable-xfsctl \
+  --enable-capstone \
+  --enable-libpmem \
+  --enable-rng-none \
+  --enable-libdaxctl \
+  --enable-xkbcommon \
+  --enable-multiprocess \
+  --enable-gio \
+  --enable-slirp=system \
+  --enable-tools \
+  --enable-vdi \
+  --enable-fuse \
+  --target-list=i386-softmmu,x86_64-softmmu,i386-linux-user,x86_64-linux-user \
+  --audio-drv-list=${AUDIO_DRV} \
+  ${USE_NETTLE} \
+  ${USE_SPICE} \
+  2>&1 | tee $OUTPUT/configure-${PRGNAM}.log
+
+# Make these first; otherwise make won't run in parallel (thanks KB).
+# make config-all-devices.mak config-all-disas.mak
+
+# Compile and install into $PKG:
+make $NUMJOBS 2>&1 | tee $OUTPUT/make-${PRGNAM}.log
+make DESTDIR=$PKG install \
+  2>&1 |tee $OUTPUT/install-${PRGNAM}.log
+
+
+# Install udev rules for /dev/kvm - make sure that your user belongs to
+# the "kvm" group; create that group first:
+mkdir -p $PKG/lib/udev/rules.d/
+install -m0644 $SRCDIR/65-kvm.rules $PKG/lib/udev/rules.d/65-kvm.rules
+
+# Create "qemu-kvm" symlink. some 3rd party frontends look for it:
+[ ! -z $KVMARCH ] && ln -s qemu-system-$KVMARCH $PKG/usr/bin/qemu-kvm
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION || true
+cat $SRCDIR/$(basename $0) > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+# Compress the man page(s):
+if [ -d $PKG/usr/man ]; then
+  find $PKG/usr/man -type f -name "*.?" -exec gzip -9f {} \;
+  for i in $(find $PKG/usr/man -type l -name "*.?") ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+fi
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+# Clean up empty files and directories:
+find $PKG/usr/share -type f -size 0 -exec rm -f {} \;
+find $PKG -type d -delete 2>/dev/null || true # Errors on non-empty dirs...
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $SRCDIR/${PRGNAM}.slack-desc > $PKG/install/slack-desc
+cat $SRCDIR/${PRGNAM}.slack-required > $PKG/install/slack-required
+
+# Build the package:
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz 2>&1 | tee $OUTPUT/makepkg-${PRGNAM}.log
+cd $OUTPUT
+md5sum ${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz > ${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txz.md5
+cd -
+cat $PKG/install/slack-desc | grep "^${PRGNAM}" > $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.txt
+cat $PKG/install/slack-required > $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.dep
+
+# Restore the original umask:
+umask ${_UMASK_}
+
+

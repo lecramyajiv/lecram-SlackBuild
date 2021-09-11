@@ -1,0 +1,8 @@
+vde
+seccomp
+sphinx
+valgrind
+pandoc
+libiscsi
+libnfs
+capstone
