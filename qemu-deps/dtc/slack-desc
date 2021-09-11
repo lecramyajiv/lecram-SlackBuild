@@ -1,0 +1,27 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+dtc: dtc
+dtc:
+dtc: Device Tree Compiler (dtc) toolchain is for working with
+dtc: device tree source and binary files and also libfdt,a utility
+dtc: library for reading and manipulating the binary format.
+dtc:
+dtc:
+dtc:
+dtc:
+dtc:
+dtc: Home: https://git.kernel.org/pub/scm/utils/dtc/dtc.git/
+
+
+
+
+
+
+
+
