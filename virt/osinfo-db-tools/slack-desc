@@ -1,0 +1,24 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+osinfo-db-tools: osinfo-db-tools
+osinfo-db-tools:
+osinfo-db-tools: Libosinfo is a GObject based library API for managing
+osinfo-db-tools: information about operating systems, hypervisors and
+osinfo-db-tools: the (virtual) hardware devices they can support.
+osinfo-db-tools:
+osinfo-db-tools: This package contains a set of tools to assist
+osinfo-db-tools: administrators and developers in managing the database.
+osinfo-db-tools:
+osinfo-db-tools:
+osinfo-db-tools: Home: https://libosinfo.org
+
+
+
+
+
