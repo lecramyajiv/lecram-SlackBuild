@@ -1,0 +1,26 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+usbredir: usbredir
+usbredir:
+usbredir: usbredir is a protocol for redirection USB traffic from
+usbredir: a single USB device,to a different (virtual) machine then
+usbredir: the one to which  the USB device is attached
+usbredir:
+usbredir:
+usbredir:
+usbredir:
+usbredir:
+usbredir: Home: https://gitlab.freedesktop.org/spice/usbredir
+
+
+
+
+
+
+
