@@ -1,0 +1,24 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+libvirt-python: libvirt-python
+libvirt-python:
+libvirt-python: Libvirt API for virtualization
+libvirt-python: Libvirt provides a portable, long term stable C API for managing the
+libvirt-python: virtualization technologies provided by many operating systems.
+libvirt-python: This package contains the python language bindings
+libvirt-python:
+libvirt-python:
+libvirt-python:
+libvirt-python:
+libvirt-python: Home:https://libvirt.org/
+
+
+
+
+
