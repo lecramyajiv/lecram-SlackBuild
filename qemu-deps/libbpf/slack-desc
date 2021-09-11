@@ -1,0 +1,27 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+libbpf: libbpf
+libbpf:
+libbpf: Libbpf- Automated upstream mirror for libbpf stand-alone build.
+libbpf: BPF is an amazing kernel technology, which allows anyone to take a
+libbpf: pick under the cover of how kernel functions without intense kernel
+libbpf: development experience and without spending tons of time to set
+libbpf: things up for the kernel development.
+libbpf:
+libbpf:
+libbpf:
+libbpf: Home: https://github.com/libbpf/libbpf.git
+
+
+
+
+
+
+
+
