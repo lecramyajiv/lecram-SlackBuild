@@ -1,0 +1,31 @@
+chafa can be used to view very, very reasonable approximations of pictures and animations in the comfort of your favorite terminal emulator.
+
+It supports the following features
+
+    1.Supports most popular image formats, including animated GIFs.
+
+    2.Outputs to all popular terminal graphics formats: Sixels, Kitty, iTerm2, Unicode mosaics.
+
+    3.Combines Unicode symbols from multiple selectable ranges for optimal output.
+
+    4.Fullwidth character support, e.g. Chinese, Japanese, Korean.
+
+    5.Glyphs can be loaded from any font file supported by Freetype (TTF, OTF, PCF, etc).
+
+    6.Multiple color modes, including Truecolor, 256-color, 16-color and simple FG/BG.
+
+    7.RGB and DIN99d color spaces for improved color picking.
+
+    8.Alpha transparency support in any color mode, including in animations.
+
+    9.Works with most modern and classic terminals and terminal emulators.
+
+    10.Documented, stable C API.
+
+    11.Fast & lean: SIMD optimized, multithreaded.
+
+    12.Suitable for terminal graphics, ANSI art composition and even black & white print.
+
+ Chafa will print a help text if run without arguments, or with chafa --help. It also comes with a man page displayable with man chafa
+
+ chafa is written and maintained by Hans Petter Jansson (hpj@hpjansson.org) et al and is licensed under the LGPLv3+
