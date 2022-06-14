@@ -1,0 +1,5 @@
+BPF is an amazing kernel technology, which
+allows anyone to take a pick under the cover
+of how kernel functions without intense kernel
+development experience and without spending
+tons of time to set things up for the kernel development.
