@@ -1,0 +1,37 @@
+qemu
+    -iscsi
+    -libcacard
+        --pcsc-lite
+    -spice-protocol
+    -spice
+    -device-tree-compiler
+    -snappy
+    -libnfs
+    -glusterfs
+        --liburcu
+    -vde2
+    -usbredir
+    -virglrenderer
+    -capstone
+    -numactl
+    -phodav
+    -rdma-core
+    -softhsm
+    -valgrind
+    -pandoc-bin
+    -ndctl includes daxctl [default]
+    -libseccomp [default]
+    -attr [default]
+    -liburing [default]
+    -libcap-ng [default]
+
+Deps to compiler
+    -libbpf
+    -libfabric
+    -libslirp
+    -vmem
+    -pmdk
+    -osinfo-db
+        -osinfo-db-tools
+
+instead of vmem -->  https://github.com/memkind/memkind
