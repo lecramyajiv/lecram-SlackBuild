@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+             |----hardy-ruler-------------------------------------------------|
+xdg-utils-cxx: xdg-utils-cxx (Xdg-Utils in C++)
+xdg-utils-cxx:
+xdg-utils-cxx: xdg-utils-cxx is an implementation of xdg in c++ to fulfill
+xdg-utils-cxx: the needs of a reliable standards in appimage project.It is
+xdg-utils-cxx: totally standalone and depends on stdlib.
+xdg-utils-cxx:
+xdg-utils-cxx: (https://github.com/azubieta/xdg-utils-cxx)
+xdg-utils-cxx:
+xdg-utils-cxx:
+xdg-utils-cxx:
+xdg-utils-cxx:
