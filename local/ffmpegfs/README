@@ -1,0 +1,14 @@
+ffmpegfs is an open source fuse based read only
+transcoding file system.It converts various
+video and audio formats on the fly and supports
+many formats.
+
+By default only root has access to this filesystem
+for other users, uncomment user_allow_other in
+/etc/fuse.conf
+
+Example:
+
+ffmpegs --desttype=mp4 input_dir output_dir -o allow_other,rw
+
+It is licensed under GPLv3
