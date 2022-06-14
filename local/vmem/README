@@ -1,0 +1,4 @@
+Volatile Persistent Memory Allocator
+malloc-like volatile allocations
+
+It is optional dependency of QEMU
