@@ -1,4 +1,4 @@
-################### QEMU script for WINDOWS GUEST ##################################
+######################################### QEMU script for WINDOWS GUEST ###################################################################
 
 # To use the host cdrom use -cdrom /dev/sr0
 # to add virtual usb create a qcow2 hd then add the following
@@ -50,7 +50,6 @@ qemu-system-x86_64 \
 	-net user,smb=/home/wgit \
 	-drive file=/home/usb.qcow2,format=qcow2,media=disk,if=virtio \
 	-drive file=/home/usb2.qcow2,format=qcow2,media=disk,if=virtio \
-	-device ac97 \
 	-boot order=d -drive file='/home/cd.ISO',format=raw,media=cdrom \
 	-drive file=/home/vir.iso,format=raw,media=cdrom \
 	-chardev qemu-vdagent,id=ch1,name=vdagent,clipboard=on \
