@@ -1,8 +1,8 @@
-################### QEMU script for WIN XP ##################################
+################### QEMU script for WINDOWS GUEST ##################################
 
 # To use the host cdrom use -cdrom /dev/sr0
 # to add virtual usb create a qcow2 hd then add the following
-#  -drive if=none,id=stick,file=/home/ben/qemu/usb.qcow2  -device nec-usb-xhci,id=xhci  -device usb-storage,bus=xhci.0,drive=stick 
+#  -drive if=none,id=stick,file=/home/usb.qcow2  -device nec-usb-xhci,id=xhci  -device usb-storage,bus=xhci.0,drive=stick 
 # to change iso during install goto the compatmonitor in qemu and use the command info block  and eject the cdrom then use command
 # change iso
 # change ide1-cd0 /tmp/dsl-4.4.10.iso 
@@ -15,7 +15,7 @@
 # Ex: -usb -device usb-host,hostbus=2,hostaddr=3 
 # To transfer files b/w host and guest use qemu-nbd it needs to be run as root or use sudo
 # modprobe nbd max_part=8
-# qemu-nbd --connect /dev/nbd0 /home/ben/virtual/usb.qcow2]
+# qemu-nbd --connect /dev/nbd0 /home/usb.qcow2
 # get the partition no to mount with $fdisk /dev/nbd0 -l
 # mount /dev/nbd0p1 /mnt
 # to unmount umount /mnt
@@ -28,8 +28,9 @@
 #  -device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0
 # to use shared folders use samba, when invoking qemu use -net user,smb=/folder and in the guest windows
 # goto network in control panel and map the network drive and thats basically it and also enable network discovery
-
-
+# install all the virtio drivers, spice guest agent qemu guest agent, winFSP and USBdk utility in the guest for 
+# better performance. This script enables clipboard sharing,shared folders between host and host and usb passthrough.
+# match the value of hostbus and hostaddr to that of the usb port which the usb device uses.
 
 
 
@@ -41,29 +42,18 @@ qemu-system-x86_64 \
 	-m 4.5G \
 	-cpu max \
 	-device intel-hda -device hda-duplex \
-	-drive file=/home/ben/virtual/win.qcow2,format=qcow2,media=disk,if=virtio \
+	-drive file=/home/in.qcow2,format=qcow2,media=disk,if=virtio \
 	-usb -usbdevice mouse -usbdevice keyboard \
 	-device virtio-vga \
 	-display gtk \
 	-net nic \
-	-net user,smb=/home/ben/wgit \
-	-drive file=/home/ben/virtual/usb.qcow2,format=qcow2,media=disk,if=virtio \
-	-drive file=/home/ben/virtual/usb2.qcow2,format=qcow2,media=disk,if=virtio \
+	-net user,smb=/home/wgit \
+	-drive file=/home/usb.qcow2,format=qcow2,media=disk,if=virtio \
+	-drive file=/home/usb2.qcow2,format=qcow2,media=disk,if=virtio \
 	-device ac97 \
-	-boot order=d -drive file='/home/ben/Torrents/Windows 10 X64 Pro 21H2 incl Office 2021 en-US MARCH 2022 {Gen2}/21H2.OFF21.ENU.MAR2022.ISO',format=raw,media=cdrom \
-	-drive file=/home/ben/Downloads/vir.iso,format=raw,media=cdrom \
+	-boot order=d -drive file='/home/cd.ISO',format=raw,media=cdrom \
+	-drive file=/home/vir.iso,format=raw,media=cdrom \
 	-chardev qemu-vdagent,id=ch1,name=vdagent,clipboard=on \
-    -device virtio-serial-pci \
-    -device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0
-
-
-
-
-# -usb -device usb-host,hostbus=1,hostaddr=44
-# -net nic \
-#	-net user \
-#-usb -device usb-host,hostbus=1,hostaddr=34
-#       -drive file=/home/ben/virtual/usb.qcow2,format=qcow2,media=disk,if=virtio \
-#	-device ac97
-
-
+    	-device virtio-serial-pci \
+    	-device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0 \
+	-usb -device usb-host,hostbus=1,hostaddr=44
