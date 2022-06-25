@@ -31,7 +31,8 @@
 # install all the virtio drivers, spice guest agent qemu guest agent, winFSP and USBdk utility in the guest for 
 # better performance. This script enables clipboard sharing,shared folders between host and host and usb passthrough.
 # match the value of hostbus and hostaddr to that of the usb port which the usb device uses.
-
+# To use OpenGL in windows guest use -device virtio-vga-gl -display gtk,gl=on but it would be slow and it 
+# seems virglrenderer can't be used in windows guest.
 
 
 #! /bin/bash
