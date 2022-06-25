@@ -28,9 +28,10 @@
 #  -device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0
 # to use shared folders use samba, when invoking qemu use -net user,smb=/folder and in the guest windows
 # goto network in control panel and map the network drive and thats basically it and also enable network discovery
-
-
-
+# For linux guest use virglrenderer to get near native performance.
+# The hostbus and hostaddr changes everytime run lsusb before starting the VM.
+# To use shared folders in linux guest make sure you have samba in linux guest then
+# run mount -t cifs //10.0.2.4/qemu/ mount_point and to unmount run umount -a -t cifs -l
 
 
 #! /bin/bash
@@ -52,17 +53,5 @@ qemu-system-x86_64 \
 	-boot order=d -drive file=/mnt/sys-e/iso/slackware64-15.0-install-dvd.iso,format=raw,media=cdrom \
 	-drive file=/home/ben/Downloads/vir.iso,format=raw,media=cdrom \
 	-chardev qemu-vdagent,id=ch1,name=vdagent,clipboard=on \
-    -device virtio-serial-pci \
-    -device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0
-
-
-
-
-# -usb -device usb-host,hostbus=1,hostaddr=44
-# -net nic \
-#	-net user \
-#-usb -device usb-host,hostbus=1,hostaddr=34
-#       -drive file=/home/ben/virtual/usb.qcow2,format=qcow2,media=disk,if=virtio \
-#	-device ac97
-
-
+	-device virtio-serial-pci \
+   	-device virtserialport,chardev=ch1,id=ch1,name=com.redhat.spice.0
