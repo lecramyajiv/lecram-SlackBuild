@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+        |----handy-ruler------------------------------------------------------|
+supermin: supermin (Tool for building supermin appliances)
+supermin:
+supermin: Supermin appliances are tiny appliances similar to virtual machine
+supermin: images which gets instantiated on the fly in a fraction of second
+supermin: to a filesystem image when they are booted.
+supermin:
+supermin: (https://libguestfs.org)
+supermin:
+supermin:
+supermin:
+supermin:
