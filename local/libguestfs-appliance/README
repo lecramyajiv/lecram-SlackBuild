@@ -1,0 +1,4 @@
+The libguestfs library allows accessing and
+modifying guest disk images.
+This is a prebuilt appliance that is needed
+by libguestfs for running.
