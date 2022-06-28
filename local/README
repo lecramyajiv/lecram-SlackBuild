@@ -1,0 +1,7 @@
+Some experiences in dealing with packages in slackware
+
+1. Do not install libguestfs in slackware it messes up the system
+2. If your using cpan do not run as a $USER.
+3. If you want to install perl or ocaml modules try to build a slackbuild first it would be better and it 
+won't balloon up the system.
+4. Same goes with python modules only use pip as a last resort.
