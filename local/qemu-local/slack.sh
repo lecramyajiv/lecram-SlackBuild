@@ -32,6 +32,12 @@
 # The hostbus and hostaddr changes everytime run lsusb before starting the VM.
 # To use shared folders in linux guest make sure you have samba in linux guest then
 # run mount -t cifs //10.0.2.4/qemu/ mount_point and to unmount run umount -a -t cifs -l
+# another way for host usb passthrough from Gentoo wiki
+# -usbdevice host:VENDOR-ID:PRODUCT-ID  determine using lsusb  command
+# Ex: Bus 001 Device 006: ID: 08ec:2039 M-Systems Flash Disk Pioneers
+# 08ec is the vendor-id and 2039 is the product id. 
+
+
 
 
 #! /bin/bash
