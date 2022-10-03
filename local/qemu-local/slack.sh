@@ -1,5 +1,7 @@
 ################### QEMU script for WIN XP ##################################
 
+
+# to create image run qemu-img create -f qcow2 ex.qcow2 50G
 # To use the host cdrom use -cdrom /dev/sr0
 # to add virtual usb create a qcow2 hd then add the following
 #  -drive if=none,id=stick,file=/home/ben/qemu/usb.qcow2  -device nec-usb-xhci,id=xhci  -device usb-storage,bus=xhci.0,drive=stick 
